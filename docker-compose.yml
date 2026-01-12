@@ -16,7 +16,7 @@ services:
     volumes:
       - redis:/data
 
-  horde-server:
+  horde_server:
     # Requires access to Unreal Engine's image repository on GitHub
     image: ghcr.io/epicgames/horde-server:latest
     restart: unless-stopped
@@ -32,7 +32,7 @@ services:
     volumes:
       # Mount Horde's data directory to ./data for easy viewing and modifying
       # Once server has started, this directory is populated with default configuration files from the container
-      - ./data:/app/data
+      - ./data:/app/Data:z
 
   nginx:
     image: nginx:latest
@@ -41,15 +41,24 @@ services:
     environment:
       NGINX_ENTRYPOINT_QUIET_LOGS: 1
     ports:
+      # Firewall setup: allow through http and https.
+      # sudo firewall-cmd --zone=public --add-service=http
+      # sudo firewall-cmd --zone=public --add-service=https
+      # sudo firewall-cmd --reload
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:z
+      # Permissions setup: permissive for public certs, restricted privatekey
+      # sudo chmod 750 -R /etc/letsencrypt/{live,archive}
+      # sudo chmod 640 /etc/letsencrypt/archive/horde.ninepointeightgame.com/privkey1.pem
+      # sudo chgrp linuxuser /etc/letsencrypt/archive/horde.ninepointeightgame.com/privkey1.pem
+      - /etc/letsencrypt/live:/etc/letsencrypt/live:ro
+      - /etc/letsencrypt/archive:/etc/letsencrypt/archive:ro
       - nginx_cache:/var/cache/nginx
       - nginx_pid:/var/run
 
-# Provide persistence between container restarts for MongoDB and Redis
+# Provide persistence between container restarts for MongoDB, Redis and nginx
 volumes:
   mongodb:
     driver: local
