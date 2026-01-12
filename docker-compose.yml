@@ -1,0 +1,61 @@
+services:
+  mongodb:
+    image: mongo:7.0.5-jammy
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: horde
+      MONGO_INITDB_ROOT_PASSWORD: LXdTHaF4CUFosZmoHFst
+    command: --quiet --logpath /dev/null
+    volumes:
+      - mongodb:/data/db
+
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    command: redis-server --save 60 1 --port 30002 --loglevel warning
+    volumes:
+      - redis:/data
+
+  horde-server:
+    # Requires access to Unreal Engine's image repository on GitHub
+    image: ghcr.io/epicgames/horde-server:latest
+    restart: unless-stopped
+    environment:
+      # Horde uses standard configuration from ASP.NET, allowing values to be set through env vars and files.
+      # See https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/
+      # To configure via config file, see the mounted directory and file ./data/server.json.
+      # The env vars below are set as they're configured through Docker Compose
+      Horde__HttpPort: 0
+      Horde__Http2Port: 13342
+      Horde__RedisConnectionConfig: redis:30002
+      Horde__DatabaseConnectionString: mongodb://horde:LXdTHaF4CUFosZmoHFst@mongodb:27017/Horde?authSource=admin
+    volumes:
+      # Mount Horde's data directory to ./data for easy viewing and modifying
+      # Once server has started, this directory is populated with default configuration files from the container
+      - ./data:/app/data
+
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    read_only: true
+    environment:
+      NGINX_ENTRYPOINT_QUIET_LOGS: 1
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - nginx_cache:/var/cache/nginx
+      - nginx_pid:/var/run
+
+# Provide persistence between container restarts for MongoDB and Redis
+volumes:
+  mongodb:
+    driver: local
+  redis:
+    driver: local
+  nginx_cache:
+    driver: local
+  nginx_pid:
+    driver: local
