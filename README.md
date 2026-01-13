@@ -11,9 +11,11 @@ Tested on AlmaLinux 10 with unprivileged user.
 
 `sudo firewall-cmd --reload`
 
-1. Get a LetsEncrypt certificate with `certbot --standalone`.
-1. Change certificate permissions as described in `docker-compose.yml/nginx/volumes`.
+(Check with `sudo firewall-cmd --list-services`)
+
 1. Clone this repo.
+1. Get a LetsEncrypt certificate with [certbot](https://certbot.eff.org/instructions?ws=other&os=snap&tab=standard) and `certbot --webroot` pointing to `./html`.
+1. Change certificate permissions as described in `docker-compose.yml/nginx/volumes`.
 1. Execute `./run.sh` (will ask for sudo permission to allow a brief privileged port bind access).
 
 ## To Do:
@@ -24,6 +26,10 @@ List all running containers:
 
 `podman ps`
 
-Podman stop all command:
+Podman stop all containers:
 
 `podman rm -a -f`
+
+Reset everything:
+
+`podman system reset`
