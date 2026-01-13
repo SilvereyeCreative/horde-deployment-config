@@ -15,3 +15,7 @@ sudo sysctl net.ipv4.ip_unprivileged_port_start=1024
 
 echo "Running Certbot..."
 sudo certbot certonly --webroot -w ./html
+
+pushd nginx_cert
+podman-compose down
+popd

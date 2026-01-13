@@ -1,7 +1,7 @@
 {
-  "$schema": "horde.ninepointeightgame.com/api/v1/schema/catalog.json",
+  "$schema": "horde.silvereyecreative.com/api/v1/schema/catalog.json",
   "Horde": {
     "AuthMethod": "Anonymous",
-    "ServerURL": "horde.ninepointeightgame.com"
+    "ServerURL": "horde.silvereyecreative.com"
   }
 }
