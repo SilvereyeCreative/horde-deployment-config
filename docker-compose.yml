@@ -4,7 +4,7 @@ services:
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: horde
-      MONGO_INITDB_ROOT_PASSWORD: LXdTHaF4CUFosZmoHFst
+      MONGO_INITDB_ROOT_PASSWORD: MDB_PSWD
     command: --quiet --logpath /dev/null
     volumes:
       - mongodb:/data/db
@@ -28,7 +28,7 @@ services:
       Horde__HttpPort: 0
       Horde__Http2Port: 13342
       Horde__RedisConnectionConfig: redis:30002
-      Horde__DatabaseConnectionString: mongodb://horde:LXdTHaF4CUFosZmoHFst@mongodb:27017/Horde?authSource=admin
+      Horde__DatabaseConnectionString: mongodb://horde:MDB_PSWD@mongodb:27017/Horde?authSource=admin
     volumes:
       # Mount Horde's data directory to ./data for easy viewing and modifying
       # Once server has started, this directory is populated with default configuration files from the container
@@ -38,6 +38,7 @@ services:
     image: nginx:latest
     restart: unless-stopped
     read_only: true
+    container_name: horde_nginx
     environment:
       NGINX_ENTRYPOINT_QUIET_LOGS: 1
     ports:
@@ -46,8 +47,8 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:z
       - ./html/.well-known/acme-challenge:/var/acme-challenge:z
-      # Permissions setup: permissive for public certs, restricted privatekey
-      # sudo chmod 750 -R /etc/letsencrypt/{live,archive}
+      # Permissions setup: permissive for public certs, restricted privatekey.
+      # sudo chmod 755 -R /etc/letsencrypt/{live,archive}
       # sudo chmod 640 /etc/letsencrypt/archive/horde.ninepointeightgame.com/privkey1.pem
       # sudo chgrp linuxuser /etc/letsencrypt/archive/horde.ninepointeightgame.com/privkey1.pem
       - /etc/letsencrypt/live:/etc/letsencrypt/live:ro
