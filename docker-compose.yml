@@ -41,10 +41,6 @@ services:
     environment:
       NGINX_ENTRYPOINT_QUIET_LOGS: 1
     ports:
-      # Firewall setup: allow through http and https.
-      # sudo firewall-cmd --zone=public --add-service=http
-      # sudo firewall-cmd --zone=public --add-service=https
-      # sudo firewall-cmd --reload
       - "80:80"
       - "443:443"
     volumes:
