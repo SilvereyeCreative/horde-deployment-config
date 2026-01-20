@@ -29,6 +29,10 @@ services:
       Horde__Http2Port: 13342
       Horde__RedisConnectionConfig: redis:30002
       Horde__DatabaseConnectionString: mongodb://horde:MDB_PSWD@mongodb:27017/Horde?authSource=admin
+      # Backblaze S3 storage backend configuration.
+      AWS_ACCESS_KEY_ID: ""
+      AWS_SECRET_ACCESS_KEY: ""
+      AWS_ENDPOINT_URL: "https://s3.us-west-004.backblazeb2.com"
     volumes:
       # Mount Horde's data directory to ./data for easy viewing and modifying
       # Once server has started, this directory is populated with default configuration files from the container

@@ -2,6 +2,28 @@
   "$schema": "horde.silvereyecreative.com/api/v1/schema/catalog.json",
   "Horde": {
     "AuthMethod": "Anonymous",
-    "ServerURL": "horde.silvereyecreative.com"
+    "ServerURL": "horde.silvereyecreative.com",
+    "configPath": "globals.json",
+    "Perforce": [
+      {
+        "id": "silvereye-perforce",
+        "serverAndPort": "ssl:perforce.silvereyecreative.com:1666",
+        "credentials": {
+          "userName": "perforce",
+          "password": ""
+        }
+      }
+    ],
+    // Whether to use the local Perforce environment for reading configuration data
+    "UseLocalPerforceEnv": false,
+    // Configure an editor telemetry sink that stores data in the bundled MongoDB instance.
+    // This stores raw telemetry data; aggregated metrics can be computed dynamically without
+    // needing to scan this data, and is expired separately.
+    "Telemetry": [
+      {
+        "Type": "Mongo",
+        "RetainDays": 1
+      }
+    ]
   }
 }
