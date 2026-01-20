@@ -25,11 +25,27 @@ services:
       # See https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/
       # To configure via config file, see the mounted directory and file ./data/server.json.
       # The env vars below are set as they're configured through Docker Compose
+
+      # HTTP Port setup. Don't use HTTP/1, only use HTTP/2 (plaintext grpc).
       Horde__HttpPort: 0
       Horde__Http2Port: 13342
       Horde__RedisConnectionConfig: redis:30002
       Horde__DatabaseConnectionString: mongodb://horde:MDB_PSWD@mongodb:27017/Horde?authSource=admin
-      # Backblaze S3 storage backend configuration.
+
+      # Perforce settings (for accessing the global config):
+      Horde__Perforce__0__id: "default"
+      Horde__Perforce__0__serverAndPort: "ssl:perforce.silvereyecreative.com:1666"
+      Horde__Perforce__0__credentials__userName: ""
+      Horde__Perforce__0__credentials__password: ""
+
+      # Authentication settings:
+      Horde__AuthMethod: "Anonymous"
+      Horde__OidcAuthority: ""
+      Horde__OidcAudience: ""
+      Horde__OidcClientId: ""
+      Horde__OidcClientSecret: ""
+
+      # Backblaze S3 storage backend configuration:
       AWS_ACCESS_KEY_ID: ""
       AWS_SECRET_ACCESS_KEY: ""
       AWS_ENDPOINT_URL: "https://s3.us-west-004.backblazeb2.com"

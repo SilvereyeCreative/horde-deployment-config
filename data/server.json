@@ -1,19 +1,10 @@
 {
   "$schema": "horde.silvereyecreative.com/api/v1/schema/catalog.json",
   "Horde": {
-    "AuthMethod": "Anonymous",
     "ServerURL": "horde.silvereyecreative.com",
-    "configPath": "globals.json",
-    "Perforce": [
-      {
-        "id": "silvereye-perforce",
-        "serverAndPort": "ssl:perforce.silvereyecreative.com:1666",
-        "credentials": {
-          "userName": "perforce",
-          "password": ""
-        }
-      }
-    ],
+    "ConfigPath": "//UE5/Horde/globals.json",
+    "AdminClaimType": "https://horde.silvereyecreative.com/user/is-admin",
+    "AdminClaimValue": "true",
     // Whether to use the local Perforce environment for reading configuration data
     "UseLocalPerforceEnv": false,
     // Configure an editor telemetry sink that stores data in the bundled MongoDB instance.
