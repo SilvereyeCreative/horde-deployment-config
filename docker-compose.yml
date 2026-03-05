@@ -66,6 +66,7 @@ services:
       - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro,Z
+      - ./dhparam.txt:/etc/nginx/dhparam.txt:ro,Z
       - ./html/.well-known/acme-challenge:/var/acme-challenge:ro,Z
       # Permissions setup: permissive for public certs, restricted privatekey.
       # sudo chmod 0755 /etc/letsencrypt/{live,archive}
